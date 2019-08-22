@@ -1,4 +1,5 @@
 import pygame , sys
+import random
 
 class Executus(pygame.sprite.Sprite):
     def __init__(self, imagePlayer):
@@ -15,6 +16,25 @@ class Executus(pygame.sprite.Sprite):
     def update(self, updateImage):
         self.updateImage.blit(self.imagePlayer, self.rect)
 
+
+
+class Broom(pygame.sprite.Sprite):
+    def __init__(self, enemies):
+        self.enemiesList = []
+        self.imageBroom = pygame.image.load('I+S/broomAnimated.jpg2.jpg')
+        self.enemiesList.append(self.imageBroom)
+
+        self.leftBroom = random.randrange(300, 600)
+        self.topBroom = random.randrange(-400, -200)
+        self.widthBroom = 13
+        self.heightBroom = 32
+        
+        def enemies(self):
+            for x in range(len(self.enemiesList)):
+                if self.enemiesList[x].top > 2:
+                    self.enemiesList[x]=(pygame.Rect(self.leftBroom, self.topBroom, self.widthBroom, self.heightBroom))
+
+            
 
 class Game(pygame.sprite.Sprite):
     
@@ -41,6 +61,11 @@ class Game(pygame.sprite.Sprite):
 
     def start(self):
         self.game_over = False
+        self.xMove = 0
+        self.yMove = 0 
+        self.speed = 8
+        self.stop = 0
+        self.collision = False
 
 
         while self.game_over == False:
@@ -49,6 +74,31 @@ class Game(pygame.sprite.Sprite):
                     self.game_over = True
                     pygame.quit()
                     sys.exit()
+
+            
+                if self.collision == False:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_LEFT:
+                            self.xMove -= self.speed
+                        if event.key == pygame.K_RIGHT:
+                            self.xMove += self.speed
+                        if event.key == pygame.K_UP:
+                            self.yMove -= self.speed
+                        if event.key == pygame.K_DOWN:
+                            self.yMove += self.speed
+
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_LEFT:
+                            self.xMove -= self.stop
+                        if event.key == pygame.K_RIGHT:
+                            self.xMove += self.stop
+                        if event.key == pygame.K_UP:
+                            self.yMove -= self.stop
+                        if event.key == pygame.K_DOWN:
+                            self.yMove += self.stop
+            
+
+            if self.collision(self.player, self.walls):
 
 
             self.screen.blit(self.background, (0, 0))
