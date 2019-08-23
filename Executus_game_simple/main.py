@@ -1,11 +1,14 @@
 import pygame , sys
 import random
 
+
 class Executus(pygame.sprite.Sprite):
     def __init__(self, imagePlayer):
         pygame.sprite.Sprite.__init__(self)
         self.imagePlayer = imagePlayer
         self.rect = self.imagePlayer.get_rect()
+
+        self.broom = Broom(2)
         
         self.rect.top = 100
         self.rect.left = 120
@@ -15,6 +18,20 @@ class Executus(pygame.sprite.Sprite):
 
     def update(self, updateImage):
         self.updateImage.blit(self.imagePlayer, self.rect)
+
+    def collision(self, player, objets):
+        for objets in self.broom.enemiesList:      
+            if player.rect.colliderect(objets):
+                return True
+        return False
+
+class Walls(pygame.sprite.Sprite):
+    def __init__(self, position):
+        pygame.sprite.Sprite.__init__(self)
+        self.imageWalls = pygame.image.load('I+S/walls.png')
+        self.wallsSprite = pygame.sprite.Sprite()
+        self.wallsSprite.image = self.imageWalls
+        self.wallsSprite.rect = self.imageWalls.get_rect()
 
 
 
@@ -39,6 +56,9 @@ class Broom(pygame.sprite.Sprite):
         for enemy in self.enemiesList:
             enemy.move_ip()
 
+    def updateBroom(self, broomImage):
+        for enemy in self.enemiesList:
+            pygame.draw.rect(broomImage,(32,0,0) ,enemy)
 
 
 
@@ -65,6 +85,10 @@ class Game(pygame.sprite.Sprite):
 
         self.executusImage = pygame.image.load('I+S/gus 2.png')
         self.player = Executus(self.executusImage)
+
+        self.broom = Broom(2)
+
+        self.walls = Walls((width_window/10, height_window/4))
         
 
     def start(self):
@@ -73,7 +97,7 @@ class Game(pygame.sprite.Sprite):
         self.yMove = 0 
         self.speed = 8
         self.stop = 0
-        self.collision = False
+        self.collisionInGame = False
 
 
         while self.game_over == False:
@@ -84,7 +108,7 @@ class Game(pygame.sprite.Sprite):
                     sys.exit()
 
             
-                if self.collision == False:
+                if self.collisionInGame == False:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             self.xMove -= self.speed
@@ -106,15 +130,21 @@ class Game(pygame.sprite.Sprite):
                             self.yMove += self.stop
             
 
-            if self.collision(self.player, self.walls):
+            if self.player.collision(self.player, self.broom):
+                self.collisionInGame = True
+                print("Colision ")
+            if self.collisionInGame == False:
+                self.player.move(self.xMove, self.yMove)
+                self.broom.moveEnemies()
 
 
             self.screen.blit(self.background, (0, 0))
+            self.player.update(self.screen)
+            self.broom.updateBroom(self.screen)
+
             
 
-
-
-
+            pygame.display.update()
             pygame.display.flip()
             self.clock.tick(20)
 
