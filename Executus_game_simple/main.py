@@ -29,10 +29,18 @@ class Broom(pygame.sprite.Sprite):
         self.widthBroom = 13
         self.heightBroom = 32
         
-        def enemies(self):
-            for x in range(len(self.enemiesList)):
-                if self.enemiesList[x].top > 2:
-                    self.enemiesList[x]=(pygame.Rect(self.leftBroom, self.topBroom, self.widthBroom, self.heightBroom))
+    def enemies(self):
+        for x in range(len(self.enemiesList)):
+            if self.enemiesList[x].top > 2:
+                self.enemiesList[x]=(pygame.Rect(self.leftBroom, self.topBroom, self.widthBroom, self.heightBroom))
+
+
+    def moveEnemies(self):
+        for enemy in self.enemiesList:
+            enemy.move_ip()
+
+
+
 
             
 
