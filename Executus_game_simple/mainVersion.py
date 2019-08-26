@@ -107,11 +107,11 @@ class Player(pygame.sprite.Sprite):
 class Bottle(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(bottle,(80,60))   # (28,12)
+        self.image = pygame.transform.scale(bottle,(12,30))   
         self.rect = self.image.get_rect()
      #   self.radius = int(self.rect.width/2)
-        self.y = y
-        self.x = x
+        self.rect.y = y
+        self.rect.x = x
 
 
 class Breaks(pygame.sprite.Sprite):
@@ -228,7 +228,7 @@ for i in range(0,8):
 
 
 player = Player()
-bottle = Bottle(800,600)
+bottle = Bottle(720,602)
 
 broken = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
@@ -287,7 +287,7 @@ while running:
         expl = Explosion(hit.rect.center,'sm')
         all_sprites.add(expl)
      #   brooms = Brooms()
-        bottle = Bottle(800,600)
+      #  bottle = Bottle(x,y)
         all_sprites.add(bottle)
       #  bottles.add(bottle)
 
