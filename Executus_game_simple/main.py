@@ -135,11 +135,11 @@ class Breaks(pygame.sprite.Sprite):
        
 
 
-class Explosion(pygame.sprite.Sprite):
+class Collision(pygame.sprite.Sprite):
     def __init__(self,center,size):
         pygame.sprite.Sprite.__init__(self)
         self.size = size
-        self.image = explosion_anim[size][0]
+        self.image = collisionFrame[size][0]
         self.rect = self.image.get_rect()
         self.rect.center = center
         self.frame = 0
@@ -151,11 +151,11 @@ class Explosion(pygame.sprite.Sprite):
         if now - self.last_update > self.frame_rate:
             self.last_update = now
             self.frame +=1
-            if self.frame == len(explosion_anim[self.size]):
+            if self.frame == len(collisionFrame[self.size]):
                 self.kill()
             else :
                 center = self.rect.center
-                self.image = explosion_anim[self.size][self.frame]
+                self.image = collisionFrame[self.size][self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
 
@@ -164,14 +164,14 @@ class Explosion(pygame.sprite.Sprite):
 class Brooms(pygame.sprite.Sprite):
     def __init__(self): # we initialise all the variables
         pygame.sprite.Sprite.__init__(self)
-        self.image_orig = pygame.transform.scale(broom,(13,32))
-        self.image = self.image_orig.copy()
+        self.imageOrigin = pygame.transform.scale(broom,(13,32))
+        self.image = self.imageOrigin.copy()
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width*0.9/2)
 
         self.rect.x = random.randrange(0,screen_width-8)
         self.rect.y = random.randrange(100,screen_height-400)
-        self.speedy = random.randrange(1,4)
+        self.speedBrooms = random.randrange(1,4)
         self.rot = 0
 
         self.rot_speed = random.randrange(-8,8)
@@ -182,19 +182,19 @@ class Brooms(pygame.sprite.Sprite):
         if now - self.last_update > 50:
             self.last_update = now
             self.rot += (self.rot_speed)%360
-            new_img = pygame.transform.rotate(self.image_orig,self.rot)
-            old_center = self.rect.center
+            new_img = pygame.transform.rotate(self.imageOrigin,self.rot)
+            oldCenter = self.rect.center
             self.image = new_img
             self.rect =self.image.get_rect()
-            self.rect.center = old_center
+            self.rect.center = oldCenter
 
     def update(self): # this will be used to move the object
         self.rotation()
-        self.rect.y += self.speedy
+        self.rect.y += self.speedBrooms
         if self.rect.y > screen_height:
             self.rect.x = random.randrange(0,screen_width-500)
             self.rect.y = random.randrange(-100,-40)
-            self.speedy = random.randrange(1,4)
+            self.speedBrooms = random.randrange(1,4)
 
 
 
@@ -209,9 +209,9 @@ attackImage = pygame.image.load('I+S/attack.png')
 bottleOne = pygame.image.load('I+S/bottle.png')
 bottleTwo = pygame.image.load('I+S/bottle.png')
 
-explosion_anim ={}
-explosion_anim['sm']=[]
-explosion_anim['player']=[]
+collisionFrame ={}
+collisionFrame['sm']=[]
+collisionFrame['player']=[]
 
 for i in range(0,8):
     breackBottle = pygame.image.load('I+S/breackBottle.png')
@@ -219,10 +219,10 @@ for i in range(0,8):
 
     tombstoneOrigin = pygame.image.load('I+S/Tombstone.png')
     tombstone = pygame.transform.scale(tombstoneOrigin,(70,60))
-    explosion_anim['player'].append(tombstone)
+    collisionFrame['player'].append(tombstone)
 
     img_sm = pygame.transform.scale(breackBottle,(32,32))
-    explosion_anim['sm'].append(img_sm)
+    collisionFrame['sm'].append(img_sm)
 
 
 positions = [(720,602),(868,600)]
@@ -299,7 +299,7 @@ while running:
         explosion_sound.play()
     for hit in hits:
         score += 1
-        expl = Explosion(hit.rect.center,'sm')
+        expl = Collision(hit.rect.center,'sm')
         all_sprites.add(expl)
         all_sprites.add(totalBottles)
     
@@ -308,14 +308,14 @@ while running:
     # here we see whether it will hit or not
     hits = pygame.sprite.spritecollide(player,enemies,True,pygame.sprite.collide_circle)
     for hit in hits:
-        expl1 = Explosion(hit.rect.center,'sm')
+        expl1 = Collision(hit.rect.center,'sm')
         all_sprites.add(expl1)
         brooms = Brooms()
         all_sprites.add(brooms)
         enemies.add(brooms)
         player.shield -= 50
         if player.shield <= 0:
-            death_explosion = Explosion(player.rect.center,'player')
+            death_explosion = Collision(player.rect.center,'player')
             all_sprites.add(death_explosion)
             player.hide()
             player.player_lives -= 1
