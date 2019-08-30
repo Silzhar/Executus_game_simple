@@ -254,7 +254,8 @@ all_sprites.add(bottle2)
 
 # load all the sound
 knockSound = pygame.mixer.Sound('I+S/swoosh.wav')
-explosion_sound = pygame.mixer.Sound('I+S/Cat_Meow.wav')
+hitSound = pygame.mixer.Sound('I+S/Cat_Meow.wav')
+broomHit = pygame.mixer.Sound('I+S/wail_cat.wav')
 pygame.mixer.music.load('I+S/gameLoops.mp3')
 pygame.mixer.music.set_volume(1)
 
@@ -296,7 +297,7 @@ while running:
     # check whether bullet hit
     hits = pygame.sprite.groupcollide(broken,bottles,True,True)
     if hits:
-        explosion_sound.play()
+        hitSound.play()
     for hit in hits:
         score += 1
         expl = Collision(hit.rect.center,'sm')
@@ -308,6 +309,7 @@ while running:
     # here we see whether it will hit or not
     hits = pygame.sprite.spritecollide(player,enemies,True,pygame.sprite.collide_circle)
     for hit in hits:
+        broomHit.play() # change
         expl1 = Collision(hit.rect.center,'sm')
         all_sprites.add(expl1)
         brooms = Brooms()
