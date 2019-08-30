@@ -103,21 +103,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = (screen_width/2,screen_height + 200)
 
 
-class Bottle(pygame.sprite.Sprite):
-    def __init__(self, position):  
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(bottleOne,(12,30))   
-        self.rect = self.image.get_rect()
-        self.rect = positions[0]
-
-class Bottle2(pygame.sprite.Sprite):
-    def __init__(self, position):  
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(bottleTwo,(12,30))   
-        self.rect = self.image.get_rect()
-        self.rect = positions[1]
-
-
 class Breaks(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
@@ -197,6 +182,17 @@ class Brooms(pygame.sprite.Sprite):
             self.speedBrooms = random.randrange(1,4)
 
 
+class Bottle(Brooms):
+    def __init__(self, position):  
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale(bottleOne,(12,30))   
+        self.rect = self.image.get_rect()
+        self.rect = positions
+    
+    def update(self):
+        all_sprites.add(bottles)
+        all_sprites.draw(screen)
+
 
 # we load the graphics here 
 background = pygame.image.load('I+S/indoor.png')
@@ -234,7 +230,7 @@ player = Player()
 
 
 bottle1 = Bottle(Position)
-bottle2 = Bottle2(position2)
+bottle2 = Bottle(position2)
 
 broken = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
@@ -254,7 +250,7 @@ all_sprites.add(bottle2)
 
 # load all the sound
 knockSound = pygame.mixer.Sound('I+S/swoosh.wav')
-hitSound = pygame.mixer.Sound('I+S/Cat_Meow.wav')
+hitSound = pygame.mixer.Sound('I+S/glass_break.wav')
 broomHit = pygame.mixer.Sound('I+S/wail_cat.wav')
 pygame.mixer.music.load('I+S/gameLoops.mp3')
 pygame.mixer.music.set_volume(1)
