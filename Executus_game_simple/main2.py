@@ -187,7 +187,8 @@ class Bottle(Brooms):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(bottleOne,(12,30))   
         self.rect = self.image.get_rect()
-        self.rect = positions
+        self.rect = Position 
+        
     
     def update(self):
         all_sprites.add(bottles)
@@ -198,7 +199,8 @@ class Bottle2(Brooms):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(bottleTwo,(12,30))   
         self.rect = self.image.get_rect()
-        self.rect = positions
+        self.rect = position2
+        
     
     def update(self):
         all_sprites.add(bottles)
@@ -220,6 +222,8 @@ collisionFrame ={}
 collisionFrame['sm']=[]
 collisionFrame['player']=[]
 
+
+
 for i in range(0,8):
     breackBottle = pygame.image.load('I+S/breackBottle.png')
     img = (breackBottle) 
@@ -230,7 +234,6 @@ for i in range(0,8):
 
     img_sm = pygame.transform.scale(breackBottle,(32,32))
     collisionFrame['sm'].append(img_sm)
-
 
 positions = [(720,602),(868,600)]
 
@@ -307,10 +310,9 @@ while running:
         hitSound.play()
     for hit in hits:
         score += 1
-        expl = Collision(hit.rect.center,'sm')
-        all_sprites.add(expl)
-        all_sprites.add(bottles)
-    
+        collision = Collision(hit.rect.center,'sm')
+        all_sprites.add(collision)
+        all_sprites.add(totalBottles)
         
 
     # here we see whether it will hit or not
