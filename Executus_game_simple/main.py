@@ -188,6 +188,7 @@ class Bottle(Brooms):
         self.image = pygame.transform.scale(bottleOne,(12,30))   
         self.rect = self.image.get_rect()
         self.rect = positions
+       
     
     def update(self):
         all_sprites.add(bottles)
