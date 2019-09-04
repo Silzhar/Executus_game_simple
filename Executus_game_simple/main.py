@@ -47,7 +47,7 @@ def lifeBar(surf,x,y,total):   # life : status / position
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self):   #  initialize all the variables
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(player,(30,28))
         self.rect = self.image.get_rect()
@@ -147,7 +147,7 @@ class Collision(pygame.sprite.Sprite):
 
 # we create the class for moving enemies 
 class Brooms(pygame.sprite.Sprite):
-    def __init__(self): # we initialise all the variables
+    def __init__(self): 
         pygame.sprite.Sprite.__init__(self)
         self.imageOrigin = pygame.transform.scale(broom,(13,32))
         self.image = self.imageOrigin.copy()
@@ -207,30 +207,31 @@ bottleOne = pygame.image.load('I+S/bottle.png')
 bottleTwo = pygame.image.load('I+S/bottle.png')
 
 collisionFrame ={}
-collisionFrame['sm']=[]
+collisionFrame['playerHit']=[]
 collisionFrame['player']=[]
 
+
 for i in range(0,8):
-    explosion_powder = pygame.image.load('I+S/explosion_hit.png')
-    img = (explosion_powder) 
+    breackBottle = pygame.image.load('I+S/breackBottle.png')
+    img = (breackBottle) 
 
     tombstoneOrigin = pygame.image.load('I+S/Tombstone.png')
     tombstone = pygame.transform.scale(tombstoneOrigin,(70,60))
     collisionFrame['player'].append(tombstone)
 
-    img_sm = pygame.transform.scale(explosion_powder,(32,32))
-    collisionFrame['sm'].append(img_sm)
+    img_playerHit = pygame.transform.scale(breackBottle,(32,32))
+    collisionFrame['playerHit'].append(img_playerHit)
 
 
 positions = [(720,602),(868,600)]
 
-Position = positions[0]
+position1 = positions[0]
 position2 = positions[1]
 
 player = Player()
 
 
-bottle1 = Bottle(Position)
+bottle1 = Bottle(position1)
 bottle2 = Bottle(position2)
 
 broken = pygame.sprite.Group()
@@ -291,13 +292,13 @@ while running:
     # update each sprite
 
     all_sprites.update()
-    # check whether bullet hit
+    # check whether broken hit
     hits = pygame.sprite.groupcollide(broken,bottles,True,True)
     if hits:
         hitSound.play()
     for hit in hits:
         score += 1
-        expl = Collision(hit.rect.center,'sm')
+        expl = Collision(hit.rect.center,'playerHit')
         all_sprites.add(expl)
         all_sprites.add(totalBottles)
     
@@ -307,7 +308,7 @@ while running:
     hits = pygame.sprite.spritecollide(player,enemies,True,pygame.sprite.collide_circle)
     for hit in hits:
         broomHit.play() # change
-        expl1 = Collision(hit.rect.center,'sm')
+        expl1 = Collision(hit.rect.center,'playerHit')
         all_sprites.add(expl1)
         brooms = Brooms()
         all_sprites.add(brooms)
@@ -329,6 +330,7 @@ while running:
         running = False
 
     
+
     # here we fill the background
 
     # we darw the background here (image,size)
