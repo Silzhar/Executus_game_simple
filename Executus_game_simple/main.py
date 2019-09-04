@@ -211,14 +211,14 @@ collisionFrame['sm']=[]
 collisionFrame['player']=[]
 
 for i in range(0,8):
-    breackBottle = pygame.image.load('I+S/breackBottle.png')
-    img = (breackBottle) 
+    explosion_powder = pygame.image.load('I+S/explosion_hit.png')
+    img = (explosion_powder) 
 
     tombstoneOrigin = pygame.image.load('I+S/Tombstone.png')
     tombstone = pygame.transform.scale(tombstoneOrigin,(70,60))
     collisionFrame['player'].append(tombstone)
 
-    img_sm = pygame.transform.scale(breackBottle,(32,32))
+    img_sm = pygame.transform.scale(explosion_powder,(32,32))
     collisionFrame['sm'].append(img_sm)
 
 
