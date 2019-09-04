@@ -96,11 +96,19 @@ class Player(pygame.sprite.Sprite):
         broken.add(breaks)
         knockSound.play()
 
+    def collisionWall(self,groupSprites):
+        if pygame.sprite.spritecollide(self, groupSprites, False):
+            self.rect.x = self.stop
+            self.rect.y = self.stop
+
+
+
     
     def hide(self): # use this to hide the player temproarily (dead)
         self.hidden = True
         self.hide_timer = pygame.time.get_ticks()
         self.rect.center = (screen_width/2,screen_height + 200)
+
 
 
 class Breaks(pygame.sprite.Sprite):
@@ -143,6 +151,19 @@ class Collision(pygame.sprite.Sprite):
                 self.image = collisionFrame[self.size][self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
+
+
+'''    
+class Collision2(pygame.sprite.Sprite):
+    def __init__(self, crashing):  
+        pygame.sprite.Sprite.__init__(self)   '''
+
+
+class Walls(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('I+S/walls.png')
+        self.rect = self.image.get_rect()
 
 
 # we create the class for moving enemies 
@@ -188,7 +209,7 @@ class Bottle(Brooms):
         self.image = pygame.transform.scale(bottleOne,(12,30))   
         self.rect = self.image.get_rect()
         self.rect = Position 
-        
+    #    self.rect.center = (screen_width/2,screen_height-48)
     
     def update(self):
         all_sprites.add(bottles)
@@ -200,7 +221,7 @@ class Bottle2(Brooms):
         self.image = pygame.transform.scale(bottleTwo,(12,30))   
         self.rect = self.image.get_rect()
         self.rect = position2
-        
+     #   self.rect.center = (screen_width/2,screen_height-48)
     
     def update(self):
         all_sprites.add(bottles)
@@ -217,9 +238,10 @@ broom = pygame.image.load('I+S/broom.png')
 attackImage = pygame.image.load('I+S/attack.png')
 bottleOne = pygame.image.load('I+S/bottle.png')
 bottleTwo = pygame.image.load('I+S/bottle.png')
+# wallsImage = pygame.image.load('I+S/walls.png')
 
 collisionFrame ={}
-collisionFrame['sm']=[]
+collisionFrame['playerHit']=[]
 collisionFrame['player']=[]
 
 
@@ -232,8 +254,8 @@ for i in range(0,8):
     tombstone = pygame.transform.scale(tombstoneOrigin,(70,60))
     collisionFrame['player'].append(tombstone)
 
-    img_sm = pygame.transform.scale(breackBottle,(32,32))
-    collisionFrame['sm'].append(img_sm)
+    img_playerHit = pygame.transform.scale(breackBottle,(32,32))
+    collisionFrame['playerHit'].append(img_playerHit)
 
 positions = [(720,602),(868,600)]
 
@@ -241,15 +263,19 @@ Position = positions[0]
 position2 = positions[1]
 
 player = Player()
-
+walls = Walls()
 
 bottle1 = Bottle(Position)
 bottle2 = Bottle2(position2)
 
 broken = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
-totalBottles = pygame.sprite.Group()
+wall = pygame.sprite.Group()
 
+wall.add(walls)
+wall.add(player)
+
+totalBottles = pygame.sprite.Group()
 bottles = pygame.sprite.Group()
 bottles.add(bottle1)
 bottles.add(bottle2)
@@ -310,7 +336,7 @@ while running:
         hitSound.play()
     for hit in hits:
         score += 1
-        collision = Collision(hit.rect.center,'sm')
+        collision = Collision(hit.rect.center,'playerHit')
         all_sprites.add(collision)
         all_sprites.add(totalBottles)
         
@@ -319,7 +345,7 @@ while running:
     hits = pygame.sprite.spritecollide(player,enemies,True,pygame.sprite.collide_circle)
     for hit in hits:
         broomHit.play() # change
-        expl1 = Collision(hit.rect.center,'sm')
+        expl1 = Collision(hit.rect.center,'playerHit')
         all_sprites.add(expl1)
         brooms = Brooms()
         all_sprites.add(brooms)
