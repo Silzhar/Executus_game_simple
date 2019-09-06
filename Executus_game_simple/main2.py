@@ -203,24 +203,24 @@ class Brooms(pygame.sprite.Sprite):
             self.speedBrooms = random.randrange(1,4)
 
 
-class Bottle(Brooms):
-    def __init__(self, position):  
+class Bottle(pygame.sprite.Sprite):
+    def __init__(self,position):   # position ,
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(bottleOne,(12,30))   
         self.rect = self.image.get_rect()
-        self.rect = Position 
-    #    self.rect.center = (screen_width/2,screen_height-48)
+        self.position = Position  # cambiar la posicion de rect y poner la botella las coordenadas  
     
     def update(self):
         all_sprites.add(bottles)
         all_sprites.draw(screen)
 
-class Bottle2(Brooms):
+
+class Bottle2(pygame.sprite.Sprite):
     def __init__(self, position):  
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(bottleTwo,(12,30))   
         self.rect = self.image.get_rect()
-        self.rect = position2
+        self.position = position2
      #   self.rect.center = (screen_width/2,screen_height-48)
     
     def update(self):
@@ -259,13 +259,14 @@ for i in range(0,8):
 
 positions = [(720,602),(868,600)]
 
+
 Position = positions[0]
 position2 = positions[1]
 
 player = Player()
 walls = Walls()
 
-bottle1 = Bottle(Position)
+bottle1 = Bottle(rect.x ,rect.y) # Position,
 bottle2 = Bottle2(position2)
 
 broken = pygame.sprite.Group()
