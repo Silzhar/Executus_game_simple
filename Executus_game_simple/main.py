@@ -205,6 +205,7 @@ broom = pygame.image.load('I+S/broom.png')
 attackImage = pygame.image.load('I+S/attack.png')
 bottleOne = pygame.image.load('I+S/bottle.png')
 bottleTwo = pygame.image.load('I+S/bottle.png')
+hitImage = pygame.image.load('I+S/explosion_hit.png')
 
 collisionFrame ={}
 collisionFrame['playerHit']=[]
@@ -219,7 +220,7 @@ for i in range(0,8):
     tombstone = pygame.transform.scale(tombstoneOrigin,(70,60))
     collisionFrame['player'].append(tombstone)
 
-    img_playerHit = pygame.transform.scale(breackBottle,(32,32))
+    img_playerHit = pygame.transform.scale(hitImage,(40,40))
     collisionFrame['playerHit'].append(img_playerHit)
 
 
@@ -300,7 +301,7 @@ while running:
         score += 1
         expl = Collision(hit.rect.center,'playerHit')
         all_sprites.add(expl)
-        all_sprites.add(totalBottles)
+        all_sprites.add(bottles)  # totalBottles ¿?
     
         
 
